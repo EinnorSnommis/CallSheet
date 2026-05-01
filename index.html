@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recruiting Call Prep Sheet — Aiden Simmons</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2f4a;
+    --navy-light: #2a4a6b;
+    --blue: #3b7dd8;
+    --blue-soft: #e4eef9;
+    --bg: #f5f7fa;
+    --card: #ffffff;
+    --text: #1e2a3a;
+    --text-muted: #5a6a7e;
+    --border: #dce3ec;
+    --accent: #2d8a6e;
+    --accent-bg: #e8f5f0;
+    --warn: #d97b2a;
+    --warn-bg: #fef3e6;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .header {
+    background: linear-gradient(135deg, var(--navy), var(--navy-light));
+    color: #fff;
+    padding: 28px 20px 24px;
+    text-align: center;
+  }
+
+  .header h1 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .header .subtitle {
+    font-size: 0.88rem;
+    opacity: 0.8;
+    font-weight: 400;
+  }
+
+  .container {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 16px 14px 40px;
+  }
+
+  /* Profile Card */
+  .profile-card {
+    background: var(--card);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+
+  .profile-card .card-title {
+    background: var(--navy);
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    padding: 10px 16px;
+  }
+
+  .profile-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+
+  .profile-item {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .profile-item:nth-child(odd) {
+    border-right: 1px solid var(--border);
+  }
+
+  .profile-item.full {
+    grid-column: 1 / -1;
+    border-right: none;
+  }
+
+  .profile-item .label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-muted);
+    margin-bottom: 2px;
+  }
+
+  .profile-item .value {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text);
+    word-break: break-all;
+  }
+
+  .profile-item .value a {
+    color: var(--blue);
+    text-decoration: none;
+  }
+
+  /* Section */
+  .section {
+    background: var(--card);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 16px 12px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .section-header:active {
+    background: var(--blue-soft);
+  }
+
+  .section-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+    flex-shrink: 0;
+  }
+
+  .section-header h2 {
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--navy);
+    flex: 1;
+  }
+
+  .chevron {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    transition: transform 0.2s;
+  }
+
+  .section.collapsed .chevron {
+    transform: rotate(-90deg);
+  }
+
+  .section.collapsed .section-body {
+    display: none;
+  }
+
+  .section-body {
+    padding: 6px 0;
+  }
+
+  .q-item {
+    padding: 10px 16px 10px 20px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .q-item + .q-item {
+    border-top: 1px solid #f0f2f5;
+  }
+
+  .q-bullet {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 7px;
+  }
+
+  .q-bullet.ask { background: var(--blue); }
+  .q-bullet.expect { background: var(--accent); }
+  .q-bullet.tip { background: var(--warn); }
+
+  .q-text {
+    font-size: 0.88rem;
+    line-height: 1.45;
+    color: var(--text);
+  }
+
+  .q-text .hint {
+    display: block;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-top: 3px;
+    font-style: italic;
+  }
+
+  /* Checklist */
+  .check-item {
+    padding: 10px 16px 10px 20px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .check-item + .check-item {
+    border-top: 1px solid #f0f2f5;
+  }
+
+  .check-item input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin-top: 1px;
+    flex-shrink: 0;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+
+  .check-item label {
+    font-size: 0.88rem;
+    line-height: 1.4;
+    cursor: pointer;
+  }
+
+  .check-item.checked label {
+    text-decoration: line-through;
+    color: var(--text-muted);
+  }
+
+  /* Contact strip */
+  .contact-strip {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .contact-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    text-align: center;
+  }
+
+  .contact-card .name {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 4px;
+  }
+
+  .contact-card .detail {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+  }
+
+  .contact-card a {
+    color: var(--blue);
+    text-decoration: none;
+  }
+
+  /* Note box */
+  .note-box {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 14px;
+    margin: 0 16px 12px;
+    font-size: 0.82rem;
+    color: #6b4a1a;
+    line-height: 1.45;
+  }
+
+  .footer {
+    text-align: center;
+    padding: 12px;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 400px) {
+    .header h1 { font-size: 1.15rem; }
+    .profile-grid { grid-template-columns: 1fr; }
+    .profile-item:nth-child(odd) { border-right: none; }
+    .contact-strip { grid-template-columns: 1fr; }
+  }
+
+  @media print {
+    body { background: #fff; }
+    .section.collapsed .section-body { display: block !important; }
+    .chevron { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Recruiting Call Prep Sheet</h1>
+  <div class="subtitle">Aiden Simmons — Class of 2026 — Southeast Guilford HS</div>
+</div>
+
+<div class="container">
+
+  <!-- Contact Cards -->
+  <div class="contact-strip">
+    <div class="contact-card">
+      <div class="name">Aiden Simmons</div>
+      <div class="detail">
+        <a href="tel:3365082721">336-508-2721</a><br>
+        <a href="mailto:aidenjsimmons1@gmail.com">aidenjsimmons1@gmail.com</a>
+      </div>
+    </div>
+    <div class="contact-card">
+      <div class="name">Ronnie Simmons (Dad)</div>
+      <div class="detail">
+        <a href="tel:5088271110">508-827-1110</a><br>
+        <a href="mailto:rsimmonsjr1@gmail.com">rsimmonsjr1@gmail.com</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile -->
+  <div class="profile-card">
+    <div class="card-title">Player Profile</div>
+    <div class="profile-grid">
+      <div class="profile-item">
+        <div class="label">Position(s)</div>
+        <div class="value">C / P / 3B</div>
+      </div>
+      <div class="profile-item">
+        <div class="label">Bats / Throws</div>
+        <div class="value">Right / Right</div>
+      </div>
+      <div class="profile-item">
+        <div class="label">Height / Weight</div>
+        <div class="value">5'10" / 185 lbs</div>
+      </div>
+      <div class="profile-item">
+        <div class="label">GPA</div>
+        <div class="value">3.732</div>
+      </div>
+      <div class="profile-item">
+        <div class="label">HS Coach</div>
+        <div class="value">Charlie Gamble</div>
+      </div>
+      <div class="profile-item">
+        <div class="label">Coach Email</div>
+        <div class="value"><a href="mailto:gamblec@gcsnc.com">gamblec@gcsnc.com</a></div>
+      </div>
+      <div class="profile-item full">
+        <div class="label">Highlight Site</div>
+        <div class="value"><a href="https://einnorsnommis.github.io/AidenSimmons2026/" target="_blank">einnorsnommis.github.io/AidenSimmons2026/</a></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Questions to Ask -->
+  <div class="section" id="ask">
+    <div class="section-header" onclick="toggleSection('ask')">
+      <div class="section-icon" style="background:var(--blue-soft);color:var(--blue);">🎯</div>
+      <h2>Questions to Ask the Coach</h2>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="note-box">These show you've done your homework and care about fit — not just getting an offer.</div>
+      <div class="q-item"><div class="q-bullet ask"></div><div class="q-text">How many catchers are currently on your roster, and how many return next year?</div></div>
+      <div class="q-item"><div class="q-bullet ask"></div><div class="q-text">What does the path to playing time look like for an incoming freshman?</div></div>
+      <div class="q-item"><div class="q-bullet ask"></div><div class="q-text">Are you recruiting other catchers in this class?</div></div>
+      <div class="q-item"><div class="q-bullet ask"></div><div class="q-text">What stood out to you when you watched my film?</div></div>
+      <div class="q-item"><div class="q-bullet ask"></div><div class="q-text">What did you like about what you saw, and where do you see me fitting in with your program?</div></div>
+      <div class="q-item"><div class="q-bullet ask"></div><div class="q-text">What's a typical week like for players during the season? Offseason?</div></div>
+      <div class="q-item"><div class="q-bullet ask"></div><div class="q-text">How would you describe the culture you're building in this program?</div></div>
+      <div class="q-item"><div class="q-bullet ask"></div><div class="q-text">How does your program support players in demanding majors like Engineering?</div></div>
+      <div class="q-item"><div class="q-bullet ask"></div><div class="q-text">What athletic and academic scholarship or financial aid is available?</div></div>
+      <div class="q-item"><div class="q-bullet ask"></div><div class="q-text">Can I schedule a campus visit or attend a prospect workout?</div></div>
+      <div class="q-item"><div class="q-bullet ask"></div><div class="q-text">What's your recruiting timeline — when do you need a commitment decision by?</div></div>
+    </div>
+  </div>
+
+  <!-- Questions Coaches Will Ask -->
+  <div class="section" id="expect">
+    <div class="section-header" onclick="toggleSection('expect')">
+      <div class="section-icon" style="background:var(--accent-bg);color:var(--accent);">💬</div>
+      <h2>Questions Coaches Will Ask Me</h2>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="note-box">Be honest and direct. Coaches respect authenticity over rehearsed answers.</div>
+      <div class="q-item"><div class="q-bullet expect"></div><div class="q-text">What's your pop time? Fastball velocity?<span class="hint">Have numbers ready, or say "I'll get verified numbers to you."</span></div></div>
+      <div class="q-item"><div class="q-bullet expect"></div><div class="q-text">Are you committed anywhere else, or talking to other schools?<span class="hint">Be honest — mention others. It shows you're in demand.</span></div></div>
+      <div class="q-item"><div class="q-bullet expect"></div><div class="q-text">What position do you see yourself playing in college?</div></div>
+      <div class="q-item"><div class="q-bullet expect"></div><div class="q-text">Tell me about your game — what kind of hitter are you? How do you manage a pitching staff?</div></div>
+      <div class="q-item"><div class="q-bullet expect"></div><div class="q-text">Why are you interested in our program specifically?<span class="hint">Do your homework on each school before the call.</span></div></div>
+      <div class="q-item"><div class="q-bullet expect"></div><div class="q-text">What do you want to study?<span class="hint">Engineering — know what each school offers.</span></div></div>
+      <div class="q-item"><div class="q-bullet expect"></div><div class="q-text">What's your GPA? SAT/ACT scores?<span class="hint">GPA is 3.732 — strong. Have test scores ready if taken.</span></div></div>
+      <div class="q-item"><div class="q-bullet expect"></div><div class="q-text">Can your high school coach speak on your behalf?<span class="hint">"Yes — Coach Gamble is available." Share his contact info.</span></div></div>
+      <div class="q-item"><div class="q-bullet expect"></div><div class="q-text">Do you have additional film or a full game we can watch?</div></div>
+      <div class="q-item"><div class="q-bullet expect"></div><div class="q-text">Can you come visit campus?</div></div>
+    </div>
+  </div>
+
+  <!-- Call Checklist -->
+  <div class="section" id="checklist">
+    <div class="section-header" onclick="toggleSection('checklist')">
+      <div class="section-icon" style="background:var(--warn-bg);color:var(--warn);">✅</div>
+      <h2>Call Day Checklist</h2>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="check-item" onclick="toggleCheck(this)">
+        <input type="checkbox" tabindex="-1">
+        <label>Let Aiden do most of the talking — coaches want to hear from the player</label>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <input type="checkbox" tabindex="-1">
+        <label>Dad handles financial aid and logistics questions</label>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <input type="checkbox" tabindex="-1">
+        <label>Lead with: "I'm looking for a program where I can compete for a spot and contribute"</label>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <input type="checkbox" tabindex="-1">
+        <label>Have highlight site link ready to share or text to the coach</label>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <input type="checkbox" tabindex="-1">
+        <label>Research the school's program and roster before the call</label>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <input type="checkbox" tabindex="-1">
+        <label>Be in a quiet place with good signal — speaker phone with Dad nearby</label>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <input type="checkbox" tabindex="-1">
+        <label>Take notes right after the call to compare programs later</label>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <input type="checkbox" tabindex="-1">
+        <label>Send a thank-you text or email within 24 hours</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">Aiden Simmons — Class of 2026 — Southeast Guilford HS, Greensboro, NC</div>
+</div>
+
+<script>
+function toggleSection(id) {
+  document.getElementById(id).classList.toggle('collapsed');
+}
+
+function toggleCheck(el) {
+  const cb = el.querySelector('input[type="checkbox"]');
+  cb.checked = !cb.checked;
+  el.classList.toggle('checked', cb.checked);
+}
+</script>
+</body>
+</html>
