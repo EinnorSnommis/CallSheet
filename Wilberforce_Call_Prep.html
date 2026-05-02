@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wilberforce Call Prep — Aiden Simmons</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2f4a;
+    --navy-light: #2a4a6b;
+    --gold: #8b7a2e;
+    --gold-light: #f5f0e0;
+    --green: #2d6b3f;
+    --green-light: #e6f2ea;
+    --bg: #f5f7fa;
+    --card: #ffffff;
+    --text: #1e2a3a;
+    --text-muted: #5a6a7e;
+    --border: #dce3ec;
+    --blue: #3b7dd8;
+    --blue-soft: #e4eef9;
+    --accent: #2d8a6e;
+    --accent-bg: #e8f5f0;
+    --warn: #d97b2a;
+    --warn-bg: #fef3e6;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .header {
+    background: linear-gradient(135deg, #1a3a1a, #2d6b3f);
+    color: #fff;
+    padding: 28px 20px 24px;
+    text-align: center;
+  }
+
+  .header h1 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+
+  .header .school-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #d4c06a;
+    margin-bottom: 6px;
+  }
+
+  .header .subtitle {
+    font-size: 0.82rem;
+    opacity: 0.8;
+    font-weight: 400;
+  }
+
+  .container {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 16px 14px 40px;
+  }
+
+  /* Info Table Card */
+  .info-card {
+    background: var(--card);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+
+  .info-card .card-title {
+    background: var(--navy);
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    padding: 10px 16px;
+  }
+
+  .info-card .card-title.green { background: var(--green); }
+
+  .info-row {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .info-row:last-child { border-bottom: none; }
+
+  .info-label {
+    width: 110px;
+    flex-shrink: 0;
+    padding: 9px 12px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--text-muted);
+    background: var(--gold-light);
+  }
+
+  .info-value {
+    flex: 1;
+    padding: 9px 12px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text);
+    word-break: break-word;
+  }
+
+  .info-value a {
+    color: var(--blue);
+    text-decoration: none;
+  }
+
+  /* Section */
+  .section {
+    background: var(--card);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 16px 12px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .section-header:active { background: var(--blue-soft); }
+
+  .section-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+    flex-shrink: 0;
+  }
+
+  .section-header h2 {
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--navy);
+    flex: 1;
+  }
+
+  .chevron {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    transition: transform 0.2s;
+  }
+
+  .section.collapsed .chevron { transform: rotate(-90deg); }
+  .section.collapsed .section-body { display: none; }
+
+  .section-body { padding: 6px 0; }
+
+  /* Sub headers inside sections */
+  .sub-header {
+    padding: 10px 16px 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .sub-header:not(:first-child) {
+    border-top: 1px solid var(--border);
+    margin-top: 4px;
+  }
+
+  /* Items */
+  .q-item {
+    padding: 10px 16px 10px 20px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .q-item + .q-item { border-top: 1px solid #f0f2f5; }
+
+  .q-bullet {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 7px;
+  }
+
+  .q-bullet.green { background: var(--green); }
+  .q-bullet.gold { background: var(--gold); }
+  .q-bullet.blue { background: var(--blue); }
+  .q-bullet.warn { background: var(--warn); }
+
+  .q-text {
+    font-size: 0.86rem;
+    line-height: 1.45;
+    color: var(--text);
+  }
+
+  .q-text .hint {
+    display: block;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-top: 3px;
+    font-style: italic;
+  }
+
+  .q-text strong {
+    font-weight: 600;
+  }
+
+  /* Note box */
+  .note-box {
+    border-left: 3px solid;
+    border-radius: 0 8px 8px 0;
+    padding: 11px 14px;
+    margin: 6px 16px 10px;
+    font-size: 0.82rem;
+    line-height: 1.45;
+  }
+
+  .note-box.green { background: var(--green-light); border-color: var(--green); color: #1a4a28; }
+  .note-box.gold { background: var(--gold-light); border-color: var(--gold); color: #5a4e1a; }
+  .note-box.warn { background: var(--warn-bg); border-color: var(--warn); color: #6b4a1a; }
+
+  /* Checklist */
+  .check-item {
+    padding: 10px 16px 10px 20px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .check-item + .check-item { border-top: 1px solid #f0f2f5; }
+
+  .check-item input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin-top: 1px;
+    flex-shrink: 0;
+    accent-color: var(--green);
+    cursor: pointer;
+  }
+
+  .check-item label {
+    font-size: 0.86rem;
+    line-height: 1.4;
+    cursor: pointer;
+  }
+
+  .check-item.checked label {
+    text-decoration: line-through;
+    color: var(--text-muted);
+  }
+
+  /* Talking point card */
+  .talk-point {
+    padding: 10px 16px 10px 20px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .talk-point + .talk-point { border-top: 1px solid #f0f2f5; }
+
+  .talk-icon {
+    font-size: 0.8rem;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  .talk-text {
+    font-size: 0.86rem;
+    line-height: 1.45;
+    color: var(--text);
+    font-style: italic;
+  }
+
+  .footer {
+    text-align: center;
+    padding: 12px;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 400px) {
+    .header h1 { font-size: 1.1rem; }
+    .info-label { width: 95px; font-size: 0.65rem; }
+  }
+
+  @media print {
+    body { background: #fff; }
+    .section.collapsed .section-body { display: block !important; }
+    .chevron { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Call Prep Sheet</h1>
+  <div class="school-name">Wilberforce University Bulldogs</div>
+  <div class="subtitle">Coach Famble Call — May 3, 2026</div>
+</div>
+
+<div class="container">
+
+  <!-- School Info -->
+  <div class="info-card">
+    <div class="card-title green">About Wilberforce</div>
+    <div class="info-row">
+      <div class="info-label">Location</div>
+      <div class="info-value">Wilberforce, OH (~45 min east of Dayton)</div>
+    </div>
+    <div class="info-row">
+      <div class="info-label">Type</div>
+      <div class="info-value">Private HBCU — Founded 1856 (oldest private HBCU owned/operated by African Americans)</div>
+    </div>
+    <div class="info-row">
+      <div class="info-label">Division</div>
+      <div class="info-value">NAIA — HBCU Athletic Conference</div>
+    </div>
+    <div class="info-row">
+      <div class="info-label">Nickname</div>
+      <div class="info-value">Bulldogs (Green &amp; Gold)</div>
+    </div>
+    <div class="info-row">
+      <div class="info-label">Est. Tuition</div>
+      <div class="info-value">~$25,000/year</div>
+    </div>
+    <div class="info-row">
+      <div class="info-label">Housing</div>
+      <div class="info-value">On-campus: Henderson Honors Hall (104 men) &amp; Living Learning Center (188 women). Must carry 12+ credits.</div>
+    </div>
+    <div class="info-row">
+      <div class="info-label">Room &amp; Board</div>
+      <div class="info-value">Included with on-campus housing. Meals at Allen Commons dining hall. $100 reservation fee for new students.</div>
+    </div>
+    <div class="info-row">
+      <div class="info-label">Engineering</div>
+      <div class="info-value">Direct B.S. in Civil, Electrical, Environmental &amp; Computer Engineering</div>
+    </div>
+  </div>
+
+  <!-- Who You're Talking To -->
+  <div class="info-card">
+    <div class="card-title">Who You're Talking To</div>
+    <div class="info-row">
+      <div class="info-label">Call With</div>
+      <div class="info-value"><strong>Coach Byron Famble Sr.</strong> — Recruiting Coordinator / Asst. Coach</div>
+    </div>
+    <div class="info-row">
+      <div class="info-label">Head Coach</div>
+      <div class="info-value">Roosevelt Barnes (Wilberforce graduate)</div>
+    </div>
+    <div class="info-row">
+      <div class="info-label">Other Staff</div>
+      <div class="info-value">Bryan Shelby, Grant Bradley (Assistants)</div>
+    </div>
+  </div>
+
+  <!-- What to Know -->
+  <div class="section" id="know">
+    <div class="section-header" onclick="toggleSection('know')">
+      <div class="section-icon" style="background:var(--green-light);color:var(--green);">📋</div>
+      <h2>What to Know Going In</h2>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="q-item"><div class="q-bullet green"></div><div class="q-text"><strong>Brand new program:</strong> Baseball was revived in 2023 after 80+ years — partnership with the Cincinnati Reds. Still being built = more opportunity for Aiden to contribute right away.</div></div>
+      <div class="q-item"><div class="q-bullet green"></div><div class="q-text"><strong>HBCUAC Conference:</strong> The only HBCU conference in the NAIA. Opponents include Dillard, Stillman, Tougaloo, Voorhees, Wiley, and others.</div></div>
+      <div class="q-item"><div class="q-bullet green"></div><div class="q-text"><strong>Historic 2026 season:</strong> The Bulldogs just competed in the HBCUAC Championship tournament — program is building momentum fast.</div></div>
+      <div class="q-item"><div class="q-bullet green"></div><div class="q-text"><strong>Home games:</strong> Played at Athletes in Action Sports Complex in Xenia, OH (off campus).</div></div>
+      <div class="q-item"><div class="q-bullet green"></div><div class="q-text"><strong>Engineering:</strong> Direct B.S. degrees — Civil, Electrical, Environmental, Computer Engineering. No transfer or dual-degree required. Major advantage.</div></div>
+      <div class="q-item"><div class="q-bullet green"></div><div class="q-text"><strong>Financial aid:</strong> NAIA schools can offer athletic scholarships. Academic scholarships also available. Nearly 95% of students receive some form of aid.</div></div>
+      <div class="q-item"><div class="q-bullet green"></div><div class="q-text"><strong>On-campus housing:</strong> Two residence halls — Henderson Honors Hall (men) and Living Learning Center (women). Meals included at Allen Commons dining hall.</div></div>
+    </div>
+  </div>
+
+  <!-- Questions to Ask -->
+  <div class="section" id="ask">
+    <div class="section-header" onclick="toggleSection('ask')">
+      <div class="section-icon" style="background:var(--gold-light);color:var(--gold);">🎯</div>
+      <h2>Wilberforce-Specific Questions to Ask</h2>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+
+      <div class="sub-header">About the Film &amp; Fit</div>
+      <div class="q-item"><div class="q-bullet gold"></div><div class="q-text">What stood out to you when you watched my film, and where do you see me fitting in with your program?</div></div>
+      <div class="q-item"><div class="q-bullet gold"></div><div class="q-text">How many catchers do you have on the roster right now, and how many are coming back?</div></div>
+      <div class="q-item"><div class="q-bullet gold"></div><div class="q-text">With the program still being relatively new, what kind of player are you looking for to help build the culture?</div></div>
+
+      <div class="sub-header">About the Program</div>
+      <div class="q-item"><div class="q-bullet gold"></div><div class="q-text">The program has grown fast since 2023 — what's the vision for where you want to be in the next two to three years?</div></div>
+      <div class="q-item"><div class="q-bullet gold"></div><div class="q-text">What does a typical week look like for players during the season — practice, travel, film work?</div></div>
+      <div class="q-item"><div class="q-bullet gold"></div><div class="q-text">How has the partnership with the Cincinnati Reds impacted player development?</div></div>
+      <div class="q-item"><div class="q-bullet gold"></div><div class="q-text">Where do you play your home games, and is there a plan to bring games to campus?</div></div>
+
+      <div class="sub-header">About Engineering at Wilberforce</div>
+      <div class="q-item"><div class="q-bullet gold"></div><div class="q-text">I'm interested in Engineering — how do athletes in demanding majors balance their course load with the season?</div></div>
+      <div class="q-item"><div class="q-bullet gold"></div><div class="q-text">Are there engineering labs or classes that conflict with practice times, and how is that handled?</div></div>
+      <div class="q-item"><div class="q-bullet gold"></div><div class="q-text">Do you have other players currently in the engineering program?</div></div>
+
+      <div class="sub-header">About Money &amp; Next Steps</div>
+      <div class="q-item"><div class="q-bullet gold"></div><div class="q-text">What kind of athletic scholarship package is available, and can it stack with academic scholarships?</div></div>
+      <div class="q-item"><div class="q-bullet gold"></div><div class="q-text">What does room and board run on top of tuition, and does athletic aid cover any of that?</div></div>
+      <div class="q-item"><div class="q-bullet gold"></div><div class="q-text">What does the realistic total out-of-pocket cost look like after all aid?</div></div>
+      <div class="q-item"><div class="q-bullet gold"></div><div class="q-text">Can we schedule a campus visit? What's the best time to come out?</div></div>
+      <div class="q-item"><div class="q-bullet gold"></div><div class="q-text">What's your timeline for filling the roster — when would you need a decision?</div></div>
+    </div>
+  </div>
+
+  <!-- Talking Points -->
+  <div class="section" id="talk">
+    <div class="section-header" onclick="toggleSection('talk')">
+      <div class="section-icon" style="background:var(--blue-soft);color:var(--blue);">💬</div>
+      <h2>Aiden's Talking Points</h2>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="note-box warn">These aren't scripts — they're ideas to have in your back pocket. Keep it natural.</div>
+      <div class="talk-point"><div class="talk-icon">💡</div><div class="talk-text">"I'm looking for a program where I can compete for a spot and contribute right away — a program that's still being built is exciting to me because I want to help build something."</div></div>
+      <div class="talk-point"><div class="talk-icon">💡</div><div class="talk-text">"I'm a catcher first, but I can also contribute with my bat. I take pride in running a pitching staff and being a leader on the field."</div></div>
+      <div class="talk-point"><div class="talk-icon">💡</div><div class="talk-text">"Academics matter to me — I have a 3.732 GPA and I'm serious about pursuing Engineering. The fact that Wilberforce offers direct engineering degrees is a big deal for me."</div></div>
+      <div class="talk-point"><div class="talk-icon">💡</div><div class="talk-text">"I'm interested in Wilberforce because it's a program with history that's being rebuilt, the engineering program fits what I want to study, and the HBCU experience is something I value."</div></div>
+    </div>
+  </div>
+
+  <!-- Call Checklist -->
+  <div class="section" id="checklist">
+    <div class="section-header" onclick="toggleSection('checklist')">
+      <div class="section-icon" style="background:var(--accent-bg);color:var(--accent);">✅</div>
+      <h2>Call Day Checklist</h2>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="check-item" onclick="toggleCheck(this)">
+        <input type="checkbox" tabindex="-1">
+        <label>Let Aiden do most of the talking — coaches want to hear from the player</label>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <input type="checkbox" tabindex="-1">
+        <label>Dad handles financial aid, room &amp; board, and logistics questions</label>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <input type="checkbox" tabindex="-1">
+        <label>Lead with: "I'm looking for a program where I can compete and contribute"</label>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <input type="checkbox" tabindex="-1">
+        <label>Have highlight site link ready to share or text to Coach Famble</label>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <input type="checkbox" tabindex="-1">
+        <label>Be in a quiet place with good signal — speaker phone with Dad nearby</label>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <input type="checkbox" tabindex="-1">
+        <label>Take notes right after the call to compare with other schools</label>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <input type="checkbox" tabindex="-1">
+        <label>Send a thank-you text or email within 24 hours</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="note-box green" style="margin: 0 0 16px;">
+    <strong>Remember:</strong> Coach Famble reached out to you — he's interested. Ask questions, listen, and let the conversation flow naturally. You have leverage here.
+  </div>
+
+  <div class="footer">Aiden Simmons — Class of 2026 — Southeast Guilford HS, Greensboro, NC<br>
+  <a href="https://einnorsnommis.github.io/AidenSimmons2026/" style="color:var(--blue);text-decoration:none;">einnorsnommis.github.io/AidenSimmons2026/</a></div>
+</div>
+
+<script>
+function toggleSection(id) {
+  document.getElementById(id).classList.toggle('collapsed');
+}
+function toggleCheck(el) {
+  const cb = el.querySelector('input[type="checkbox"]');
+  cb.checked = !cb.checked;
+  el.classList.toggle('checked', cb.checked);
+}
+</script>
+</body>
+</html>
