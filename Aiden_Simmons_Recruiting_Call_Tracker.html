@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aiden Simmons – Recruiting Call Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #222632;
+    --border: #2e3345;
+    --text: #e8eaf0;
+    --text2: #9ba3b8;
+    --accent: #e8611a;
+    --accent-glow: rgba(232, 97, 26, 0.15);
+    --green: #34d399;
+    --green-bg: rgba(52, 211, 153, 0.1);
+    --yellow: #fbbf24;
+    --yellow-bg: rgba(251, 191, 36, 0.1);
+    --red: #f87171;
+    --red-bg: rgba(248, 113, 113, 0.1);
+    --blue: #60a5fa;
+    --blue-bg: rgba(96, 165, 250, 0.1);
+    --purple: #a78bfa;
+    --purple-bg: rgba(167, 139, 250, 0.1);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+  .header {
+    background: linear-gradient(135deg, #1a1d27 0%, #22263280 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 28px 32px 24px;
+    position: sticky; top: 0; z-index: 100;
+    backdrop-filter: blur(20px);
+  }
+  .header-top { display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px; }
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px; font-weight: 800;
+    background: linear-gradient(135deg, var(--accent), #ff9a56);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+  }
+  .header-sub { color: var(--text2); font-size: 13px; margin-top: 4px; }
+  .header-sub strong { color: var(--text); }
+  .stats-bar {
+    display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap;
+  }
+  .stat-chip {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 20px; padding: 6px 14px;
+    font-size: 12px; font-weight: 600; color: var(--text2);
+  }
+  .stat-chip .num { color: var(--text); font-size: 16px; }
+  .stat-chip.offer .num { color: var(--green); }
+  .stat-chip.warm .num { color: var(--yellow); }
+  .stat-chip.pending .num { color: var(--blue); }
+
+  .tabs {
+    display: flex; gap: 4px; margin-top: 18px;
+    border-bottom: 1px solid var(--border); padding-bottom: 0;
+  }
+  .tab {
+    padding: 8px 18px; font-size: 13px; font-weight: 600;
+    color: var(--text2); cursor: pointer; border: none; background: none;
+    border-bottom: 2px solid transparent; transition: all 0.2s;
+  }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  .content { padding: 24px 32px 80px; max-width: 1400px; margin: 0 auto; }
+
+  .section-title {
+    font-size: 15px; font-weight: 700; color: var(--text2);
+    text-transform: uppercase; letter-spacing: 1.5px;
+    margin: 28px 0 14px; display:flex; align-items:center; gap:10px;
+  }
+  .section-title::after {
+    content:''; flex:1; height:1px; background: var(--border);
+  }
+
+  .school-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .school-card:hover {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent), 0 4px 24px var(--accent-glow);
+  }
+  .school-card.status-offer { border-left: 3px solid var(--green); }
+  .school-card.status-warm { border-left: 3px solid var(--yellow); }
+  .school-card.status-contacted { border-left: 3px solid var(--blue); }
+  .school-card.status-pending { border-left: 3px solid var(--text2); }
+
+  .card-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 20px; cursor: pointer; flex-wrap: wrap; gap: 8px;
+  }
+  .card-left { display:flex; align-items:center; gap:14px; flex:1; min-width:0; }
+  .school-name {
+    font-size: 16px; font-weight: 700; white-space:nowrap;
+    overflow:hidden; text-overflow:ellipsis;
+  }
+  .school-meta {
+    display: flex; gap: 8px; align-items:center; flex-wrap:wrap;
+  }
+  .badge {
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.8px; padding: 3px 8px; border-radius: 4px;
+  }
+  .badge-njcaa { background: var(--blue-bg); color: var(--blue); }
+  .badge-naia { background: var(--purple-bg); color: var(--purple); }
+  .badge-d3 { background: var(--green-bg); color: var(--green); }
+  .badge-offer { background: var(--green-bg); color: var(--green); border:1px solid var(--green); }
+  .badge-warm { background: var(--yellow-bg); color: var(--yellow); }
+  .badge-contacted { background: var(--blue-bg); color: var(--blue); }
+  .badge-pending { background: var(--surface2); color: var(--text2); }
+
+  .card-right { display: flex; align-items:center; gap:12px; }
+  .call-status-btn {
+    font-size: 11px; font-weight: 700; padding: 6px 14px;
+    border-radius: 6px; border: 1px solid var(--border);
+    background: var(--surface2); color: var(--text2); cursor: pointer;
+    transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .call-status-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .call-status-btn.called { background: var(--green-bg); color: var(--green); border-color: var(--green); }
+
+  .expand-icon {
+    width: 20px; height: 20px; color: var(--text2);
+    transition: transform 0.3s;
+  }
+  .school-card.open .expand-icon { transform: rotate(180deg); }
+
+  .card-body {
+    display: none; padding: 0 20px 20px;
+    border-top: 1px solid var(--border);
+  }
+  .school-card.open .card-body { display: block; }
+
+  .coach-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr));
+    gap: 12px; margin-top: 14px;
+  }
+  .coach-tile {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 14px 16px;
+  }
+  .coach-tile .name { font-weight: 700; font-size: 14px; }
+  .coach-tile .title { font-size: 12px; color: var(--text2); margin-top: 2px; }
+  .contact-line {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 12px; color: var(--blue); margin-top: 6px;
+    word-break: break-all;
+  }
+  .contact-line a { color: var(--blue); text-decoration: none; }
+  .contact-line a:hover { text-decoration: underline; }
+  .contact-line svg { width:14px; height:14px; flex-shrink:0; color: var(--text2); }
+
+  .school-details {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(180px,1fr));
+    gap: 8px; margin-top: 14px;
+  }
+  .detail-item { font-size: 12px; }
+  .detail-item .label { color: var(--text2); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; font-size: 10px; }
+  .detail-item .value { color: var(--text); margin-top: 2px; }
+
+  .notes-area {
+    margin-top: 14px;
+  }
+  .notes-area label { font-size: 11px; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; }
+  .notes-area textarea {
+    width: 100%; margin-top: 6px; padding: 10px 14px;
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 8px; color: var(--text); font-family: 'DM Sans', sans-serif;
+    font-size: 13px; resize: vertical; min-height: 60px;
+    transition: border-color 0.2s;
+  }
+  .notes-area textarea:focus { outline: none; border-color: var(--accent); }
+  .notes-area textarea::placeholder { color: #555; }
+
+  .key-note {
+    background: var(--yellow-bg); border: 1px solid rgba(251,191,36,0.2);
+    border-radius: 6px; padding: 8px 12px; margin-top: 10px;
+    font-size: 12px; color: var(--yellow); line-height: 1.5;
+  }
+
+  .filter-bar {
+    display: flex; gap: 6px; margin-bottom: 8px; flex-wrap:wrap;
+  }
+  .filter-btn {
+    font-size: 11px; font-weight: 600; padding: 5px 12px;
+    border-radius: 16px; border: 1px solid var(--border);
+    background: transparent; color: var(--text2); cursor: pointer;
+    transition: all 0.2s;
+  }
+  .filter-btn:hover, .filter-btn.active {
+    background: var(--accent); color: #fff; border-color: var(--accent);
+  }
+
+  .hidden { display: none !important; }
+
+  .player-banner {
+    display: flex; gap: 24px; align-items:center; flex-wrap:wrap;
+    padding: 12px 0;
+  }
+  .player-stat { text-align:center; }
+  .player-stat .val { font-size: 18px; font-weight: 700; color: var(--accent); }
+  .player-stat .lbl { font-size: 10px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; }
+
+  @media (max-width: 640px) {
+    .header { padding: 20px 16px; }
+    .content { padding: 16px; }
+    .header h1 { font-size: 20px; }
+    .school-name { font-size: 14px; }
+    .coach-grid { grid-template-columns: 1fr; }
+    .tabs { overflow-x: auto; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div>
+      <h1>Aiden Simmons – Recruiting Call Tracker</h1>
+      <div class="header-sub">
+        <strong>C / P / 3B</strong> &nbsp;·&nbsp; 5'10" / 185 lbs &nbsp;·&nbsp; 3.732 GPA &nbsp;·&nbsp; Southeast Guilford HS &nbsp;·&nbsp; Class of 2026
+        &nbsp;·&nbsp; <a href="https://einnorsnommis.github.io/AidenSimmons2026/" target="_blank" style="color:var(--accent);">Highlights</a>
+      </div>
+    </div>
+  </div>
+  <div class="stats-bar" id="statsBar"></div>
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('all')">All Schools</button>
+    <button class="tab" onclick="switchTab('4year')">4-Year</button>
+    <button class="tab" onclick="switchTab('juco')">JUCO / 2-Year</button>
+  </div>
+</div>
+
+<div class="content" id="content"></div>
+
+<script>
+const SCHOOLS = [
+  // === 4-YEAR SCHOOLS ===
+  {
+    name: "Dillard University",
+    type: "4-year", division: "NAIA", location: "New Orleans, LA",
+    status: "offer", statusLabel: "Offer Received",
+    cost: "~$44K/yr", engineering: "3+2 Dual-Degree (Georgia Tech)",
+    housing: "Dorms", setting: "Urban",
+    notes: "Roster spot offer received May 2026. Spoke with coaching staff. Strong current relationship. Highest-ceiling engineering path via Georgia Tech dual-degree.",
+    keyNote: "Active offer on the table — still comparing with other schools before committing.",
+    coaches: [
+      { name: "(Coaching Staff)", title: "Contact TBD", email: "", phone: "" }
+    ]
+  },
+  {
+    name: "Wilberforce University",
+    type: "4-year", division: "NAIA", location: "Wilberforce, OH",
+    status: "warm", statusLabel: "Warm Lead",
+    cost: "~$25K/yr", engineering: "Direct B.S. (Civil, Electrical, Environmental)",
+    housing: "Dorms", setting: "Rural",
+    notes: "Coach Famble (Recruiting Coordinator) reached out. Best direct engineering path — no dual-degree transfer needed. HBCU. Affordable.",
+    keyNote: "Coach Famble initiated contact — follow up to discuss roster availability and visit.",
+    coaches: [
+      { name: "Coach Famble", title: "Recruiting Coordinator", email: "", phone: "" }
+    ]
+  },
+  {
+    name: "Kean University",
+    type: "4-year", division: "D3", location: "Union, NJ",
+    status: "pending", statusLabel: "Pending",
+    cost: "~$39-48K/yr", engineering: "Tech/IT Path (not traditional engineering)",
+    housing: "Dorms", setting: "NYC Metro",
+    notes: "Strong location for tech internships. CS/IT focus rather than traditional engineering. D3 — no athletic scholarships but potentially strong financial aid.",
+    coaches: [
+      { name: "(Head Coach)", title: "TBD", email: "", phone: "" }
+    ]
+  },
+  {
+    name: "Vermont State University",
+    type: "4-year", division: "D3", location: "Castleton, VT",
+    status: "pending", statusLabel: "Pending",
+    cost: "~$25-36K/yr", engineering: "Engineering Technology",
+    housing: "Dorms", setting: "Rural",
+    notes: "Affordable. Engineering technology programs available. Rural setting. Little East Conference (Castleton) / NAC (Lyndon).",
+    coaches: [
+      { name: "(Head Coach)", title: "TBD", email: "", phone: "" }
+    ]
+  },
+  {
+    name: "Monroe University",
+    type: "4-year", division: "Unknown", location: "New York, NY",
+    status: "pending", statusLabel: "Pending",
+    cost: "~$31-34K/yr", engineering: "IT/Tech",
+    housing: "Dorms", setting: "NYC Metro",
+    notes: "Career-focused, strong in business and IT. NYC access for internships.",
+    coaches: [
+      { name: "(Head Coach)", title: "TBD", email: "", phone: "" }
+    ]
+  },
+  {
+    name: "Talladega College",
+    type: "4-year", division: "NAIA", location: "Talladega, AL",
+    status: "pending", statusLabel: "Pending",
+    cost: "~$25K/yr", engineering: "None",
+    housing: "Dorms", setting: "Rural",
+    notes: "Affordable HBCU. No engineering program — academic fit depends on alternative major interests.",
+    coaches: [
+      { name: "(Head Coach)", title: "TBD", email: "", phone: "" }
+    ]
+  },
+  {
+    name: "Guilford College",
+    type: "4-year", division: "D3", location: "Greensboro, NC",
+    status: "pending", statusLabel: "Pending",
+    cost: "~$56K/yr", engineering: "None (Liberal Arts)",
+    housing: "Dorms", setting: "Suburban",
+    notes: "Local to Greensboro. ODAC conference. Higher cost — liberal arts, no engineering pathway. D3.",
+    coaches: [
+      { name: "(Head Coach)", title: "TBD", email: "", phone: "" }
+    ]
+  },
+  {
+    name: "Mitchell College",
+    type: "4-year", division: "Unknown", location: "New London, CT",
+    status: "pending", statusLabel: "Pending",
+    cost: "~$60K/yr", engineering: "Limited",
+    housing: "Dorms", setting: "Coastal",
+    notes: "Athlete-focused environment. Limited academic programs. Higher cost.",
+    coaches: [
+      { name: "(Head Coach)", title: "TBD", email: "", phone: "" }
+    ]
+  },
+  // === NJCAA / 2-YEAR SCHOOLS ===
+  {
+    name: "Wake Technical CC",
+    type: "2-year", division: "NJCAA", location: "Raleigh, NC",
+    status: "warm", statusLabel: "Warm Lead",
+    cost: "$2,254 in-state", engineering: "Electronics Eng. Tech, Mechanical Eng. Tech",
+    housing: "Commuter", setting: "Urban",
+    notes: "Coach Ellsworth responded and requested additional film. Warmest JUCO lead. DJ Russ named HC June 2024.",
+    keyNote: "Coach Ellsworth has already responded and asked for more film — warmest lead.",
+    coaches: [
+      { name: "DJ Russ", title: "Head Coach", email: "druss1@waketech.edu", phone: "(919) 866-5000" },
+      { name: "Matt Ellsworth", title: "Assistant Coach", email: "mwellsworth@waketech.edu", phone: "" },
+      { name: "Rhett James", title: "Assistant Coach", email: "rjames5@waketech.edu", phone: "" }
+    ]
+  },
+  {
+    name: "Surry Community College",
+    type: "2-year", division: "NJCAA", location: "Dobson, NC",
+    status: "contacted", statusLabel: "Contacted",
+    cost: "$2,663 in-state", engineering: "Mechatronics Eng. Tech",
+    housing: "Unknown", setting: "Rural",
+    notes: "Initial letter & follow-up sent. New HC Daryll Johnson after Tim Collins passed Aug 2025. Roy Vernon: 2025 ABCA Natl Asst Coach of Year. 5th at NJCAA World Series.",
+    keyNote: "Coaching change — contact AD Mark Tucker (tuckerm@surry.edu) for direct coach info.",
+    coaches: [
+      { name: "Daryll Johnson", title: "Head Coach", email: "Contact AD: tuckerm@surry.edu", phone: "(336) 386-3217 (AD)" },
+      { name: "Andy Cheek", title: "Pitching Coach", email: "cheekar@surry.edu", phone: "(336) 386-3553" },
+      { name: "Roy Vernon", title: "AC / Hitting Coach", email: "", phone: "(336) 401-0787" },
+      { name: "Carlo Orengo", title: "Assistant Coach", email: "", phone: "(336) 386-3553" }
+    ]
+  },
+  {
+    name: "Louisburg College",
+    type: "2-year", division: "NJCAA", location: "Louisburg, NC",
+    status: "contacted", statusLabel: "Contacted",
+    cost: "Low", engineering: "Transfer pathway",
+    housing: "Dorms", setting: "Rural",
+    notes: "Initial letter & follow-up sent. Blake Herring departed Jan 2026. Bryce Myers is Interim HC. Shane Bogli may have moved to Holy Cross — verify.",
+    keyNote: "Coaching change — Herring departed. Bogli status unconfirmed. Matt Tullock handles hitters/catchers recruiting.",
+    coaches: [
+      { name: "Bryce Myers", title: "Interim Head Coach", email: "bmyers@louisburg.edu", phone: "(919) 497-3328" },
+      { name: "Matt Tullock", title: "AC / Recruiting (Hitters/Catchers)", email: "", phone: "" },
+      { name: "Shane Bogli", title: "AC (verify status – may be at Holy Cross)", email: "", phone: "" }
+    ]
+  },
+  {
+    name: "Rockingham CC",
+    type: "2-year", division: "NJCAA", location: "Wentworth, NC",
+    status: "contacted", statusLabel: "Contacted",
+    cost: "Low", engineering: "Limited",
+    housing: "Unknown", setting: "Rural",
+    notes: "Initial letter & follow-up sent. Daniel Huff is also Athletic Director.",
+    coaches: [
+      { name: "Daniel Huff", title: "Head Coach / Athletic Director", email: "huffd5958@rockinghamcc.edu", phone: "(336) 342-4261" },
+      { name: "Jim Richardson", title: "Assistant Coach", email: "", phone: "" }
+    ]
+  },
+  {
+    name: "Pitt Community College",
+    type: "2-year", division: "NJCAA", location: "Winterville, NC",
+    status: "contacted", statusLabel: "Contacted",
+    cost: "$3,871 in-state", engineering: "Electrical Eng. Tech, Mechanical Eng. Tech",
+    housing: "Unknown", setting: "Rural",
+    notes: "Initial letter & follow-up sent. Tommy Eason: HC since 2005, 600th career win Apr 2025. Jason Wood: 9th season, Recruiting Coordinator.",
+    coaches: [
+      { name: "Tommy Eason", title: "Head Coach (21st Season)", email: "teason@email.pittcc.edu", phone: "(252) 493-7680" },
+      { name: "Jason Wood", title: "AC / Recruiting Coordinator", email: "jrwood968@my.pittcc.edu", phone: "(252) 493-7702" },
+      { name: "Kyler Harris", title: "Assistant Coach", email: "", phone: "" }
+    ]
+  },
+  {
+    name: "Brunswick CC",
+    type: "2-year", division: "NJCAA", location: "Supply, NC",
+    status: "pending", statusLabel: "Outreach Pending",
+    cost: "Low", engineering: "Limited",
+    housing: "Unknown", setting: "Rural",
+    notes: "Outreach pending. Davis Kirkpatrick is Pitching Coach/Recruiting Coordinator, 7th yr on staff, ECU alum. Pete Hughes: former Pirates draft pick (1969).",
+    coaches: [
+      { name: "Robert Allen", title: "Head Coach", email: "allenr@brunswickcc.edu", phone: "(910) 755-7300" },
+      { name: "Davis Kirkpatrick", title: "Pitching Coach / Recruiting Coord.", email: "kirkpatrickd@brunswickcc.edu", phone: "" }
+    ]
+  },
+  {
+    name: "Roxbury Community College",
+    type: "2-year", division: "NJCAA", location: "Boston, MA",
+    status: "pending", statusLabel: "Pending",
+    cost: "Low tuition", engineering: "Transfer",
+    housing: "No dorms", setting: "Urban",
+    notes: "Transfer-focused. Boston access. Limited baseball program. Still making calls before Dillard decision.",
+    coaches: [
+      { name: "(Head Coach)", title: "TBD", email: "", phone: "" }
+    ]
+  },
+  {
+    name: "Long Beach City College",
+    type: "2-year", division: "NJCAA", location: "Long Beach, CA",
+    status: "pending", statusLabel: "Pending",
+    cost: "Low tuition", engineering: "Transfer pipeline",
+    housing: "No dorms", setting: "Urban",
+    notes: "Strong transfer pipeline. Cost-saving option. Limited recruiting exposure from NC.",
+    coaches: [
+      { name: "(Head Coach)", title: "TBD", email: "", phone: "" }
+    ]
+  },
+  {
+    name: "Denmark Technical College",
+    type: "2-year", division: "NJCAA", location: "Denmark, SC",
+    status: "pending", statusLabel: "Pending",
+    cost: "Low", engineering: "Trade-focused",
+    housing: "Dorms", setting: "Rural",
+    notes: "Trade-focused. Smaller program.",
+    coaches: [
+      { name: "(Head Coach)", title: "TBD", email: "", phone: "" }
+    ]
+  }
+];
+
+// Load saved state
+let callState = {};
+let notesState = {};
+try {
+  callState = JSON.parse(localStorage.getItem('aiden_calls') || '{}');
+  notesState = JSON.parse(localStorage.getItem('aiden_notes') || '{}');
+} catch(e) {}
+
+function save() {
+  localStorage.setItem('aiden_calls', JSON.stringify(callState));
+  localStorage.setItem('aiden_notes', JSON.stringify(notesState));
+}
+
+let currentTab = 'all';
+let currentFilter = 'all';
+
+function switchTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+  render();
+}
+
+function setFilter(f) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === f));
+  render();
+}
+
+function toggleCard(id) {
+  document.getElementById('card-'+id)?.classList.toggle('open');
+}
+
+function toggleCall(key, e) {
+  e.stopPropagation();
+  callState[key] = !callState[key];
+  save();
+  render();
+}
+
+function updateNotes(key, val) {
+  notesState[key] = val;
+  save();
+}
+
+function phoneIcon() {
+  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>`;
+}
+function emailIcon() {
+  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>`;
+}
+function chevronIcon() {
+  return `<svg class="expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>`;
+}
+
+function renderCard(school, idx) {
+  const key = school.name.replace(/\s/g,'_');
+  const called = callState[key];
+  const note = notesState[key] || '';
+
+  const statusClass = `status-${school.status}`;
+  const badgeClass = school.division === 'NJCAA' ? 'badge-njcaa' : school.division === 'NAIA' ? 'badge-naia' : 'badge-d3';
+
+  let coachesHTML = school.coaches.map(c => {
+    let contactLines = '';
+    if (c.email) contactLines += `<div class="contact-line">${emailIcon()} <a href="mailto:${c.email.replace('Contact AD: ','')}">${c.email}</a></div>`;
+    if (c.phone) contactLines += `<div class="contact-line">${phoneIcon()} <a href="tel:${c.phone.replace(/[^0-9+]/g,'')}">${c.phone}</a></div>`;
+    return `<div class="coach-tile">
+      <div class="name">${c.name}</div>
+      <div class="title">${c.title}</div>
+      ${contactLines}
+    </div>`;
+  }).join('');
+
+  let keyNoteHTML = school.keyNote ? `<div class="key-note">⚡ ${school.keyNote}</div>` : '';
+
+  return `
+  <div class="school-card ${statusClass}" id="card-${idx}">
+    <div class="card-header" onclick="toggleCard(${idx})">
+      <div class="card-left">
+        <div>
+          <div class="school-name">${school.name}</div>
+          <div class="school-meta">
+            <span class="badge ${badgeClass}">${school.division}</span>
+            <span class="badge badge-${school.status}">${school.statusLabel}</span>
+            <span style="font-size:11px;color:var(--text2)">${school.location}</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-right">
+        <button class="call-status-btn ${called?'called':''}" onclick="toggleCall('${key}', event)">
+          ${called ? '✓ Called' : '☎ Mark Called'}
+        </button>
+        ${chevronIcon()}
+      </div>
+    </div>
+    <div class="card-body">
+      ${keyNoteHTML}
+      <div class="section-title" style="margin-top:12px;font-size:12px;">Coaching Staff</div>
+      <div class="coach-grid">${coachesHTML}</div>
+      <div class="school-details">
+        <div class="detail-item"><div class="label">Type</div><div class="value">${school.type}</div></div>
+        <div class="detail-item"><div class="label">Cost</div><div class="value">${school.cost}</div></div>
+        <div class="detail-item"><div class="label">Engineering</div><div class="value">${school.engineering}</div></div>
+        <div class="detail-item"><div class="label">Housing</div><div class="value">${school.housing || 'TBD'}</div></div>
+        <div class="detail-item"><div class="label">Setting</div><div class="value">${school.setting}</div></div>
+      </div>
+      <div class="notes-area">
+        <label>Pre-loaded Notes</label>
+        <p style="font-size:12px;color:var(--text2);margin-top:4px;line-height:1.5;">${school.notes}</p>
+      </div>
+      <div class="notes-area" style="margin-top:10px;">
+        <label>Your Call Notes</label>
+        <textarea placeholder="Add notes after the call…" oninput="updateNotes('${key}', this.value)">${note}</textarea>
+      </div>
+    </div>
+  </div>`;
+}
+
+function render() {
+  let filtered = SCHOOLS.filter(s => {
+    if (currentTab === '4year' && s.type !== '4-year') return false;
+    if (currentTab === 'juco' && s.type !== '2-year') return false;
+    if (currentFilter === 'offer' && s.status !== 'offer') return false;
+    if (currentFilter === 'warm' && s.status !== 'warm') return false;
+    if (currentFilter === 'contacted' && s.status !== 'contacted') return false;
+    if (currentFilter === 'pending' && s.status !== 'pending') return false;
+    if (currentFilter === 'called' && !callState[s.name.replace(/\s/g,'_')]) return false;
+    if (currentFilter === 'notcalled' && callState[s.name.replace(/\s/g,'_')]) return false;
+    return true;
+  });
+
+  // Stats
+  const total = SCHOOLS.length;
+  const offers = SCHOOLS.filter(s=>s.status==='offer').length;
+  const warm = SCHOOLS.filter(s=>s.status==='warm').length;
+  const contacted = SCHOOLS.filter(s=>s.status==='contacted').length;
+  const calledCount = SCHOOLS.filter(s=>callState[s.name.replace(/\s/g,'_')]).length;
+
+  document.getElementById('statsBar').innerHTML = `
+    <div class="stat-chip"><span class="num">${total}</span> Total</div>
+    <div class="stat-chip offer"><span class="num">${offers}</span> Offer</div>
+    <div class="stat-chip warm"><span class="num">${warm}</span> Warm</div>
+    <div class="stat-chip"><span class="num">${contacted}</span> Contacted</div>
+    <div class="stat-chip pending"><span class="num">${total - offers - warm - contacted}</span> Pending</div>
+    <div class="stat-chip" style="border-color:var(--green)"><span class="num" style="color:var(--green)">${calledCount}</span> Called</div>
+  `;
+
+  // Sort: offer → warm → contacted → pending
+  const order = {offer:0, warm:1, contacted:2, pending:3};
+  filtered.sort((a,b) => (order[a.status]||3) - (order[b.status]||3));
+
+  let html = `
+    <div class="filter-bar">
+      <button class="filter-btn ${currentFilter==='all'?'active':''}" data-filter="all" onclick="setFilter('all')">All</button>
+      <button class="filter-btn ${currentFilter==='offer'?'active':''}" data-filter="offer" onclick="setFilter('offer')">Offers</button>
+      <button class="filter-btn ${currentFilter==='warm'?'active':''}" data-filter="warm" onclick="setFilter('warm')">Warm Leads</button>
+      <button class="filter-btn ${currentFilter==='contacted'?'active':''}" data-filter="contacted" onclick="setFilter('contacted')">Contacted</button>
+      <button class="filter-btn ${currentFilter==='pending'?'active':''}" data-filter="pending" onclick="setFilter('pending')">Pending</button>
+      <button class="filter-btn ${currentFilter==='called'?'active':''}" data-filter="called" onclick="setFilter('called')">✓ Called</button>
+      <button class="filter-btn ${currentFilter==='notcalled'?'active':''}" data-filter="notcalled" onclick="setFilter('notcalled')">Not Called</button>
+    </div>
+  `;
+
+  if (filtered.length === 0) {
+    html += `<p style="color:var(--text2);text-align:center;padding:40px;">No schools match this filter.</p>`;
+  } else {
+    filtered.forEach((s, i) => {
+      html += renderCard(s, SCHOOLS.indexOf(s));
+    });
+  }
+
+  document.getElementById('content').innerHTML = html;
+}
+
+render();
+</script>
+</body>
+</html>
