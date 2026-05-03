@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roxbury CC Call Prep — Aiden Simmons</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a1a3a;
+    --maroon: #7a1a2a;
+    --maroon-light: #f5e8ea;
+    --bg: #f5f7fa;
+    --card: #ffffff;
+    --text: #1e2a3a;
+    --text-muted: #5a6a7e;
+    --border: #dce3ec;
+    --blue: #3b7dd8;
+    --blue-soft: #e4eef9;
+    --accent: #2d8a6e;
+    --accent-bg: #e8f5f0;
+    --warn: #d97b2a;
+    --warn-bg: #fef3e6;
+    --red: #c43a3a;
+    --red-light: #fce8e8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; -webkit-font-smoothing: antialiased; }
+  .header { background: linear-gradient(135deg, #1a1a3a, #7a1a2a); color: #fff; padding: 28px 20px 24px; text-align: center; }
+  .header h1 { font-size: 1.25rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 2px; }
+  .header .school-name { font-size: 1.1rem; font-weight: 600; color: #f0a0a0; margin-bottom: 6px; }
+  .header .subtitle { font-size: 0.82rem; opacity: 0.8; font-weight: 400; }
+  .container { max-width: 640px; margin: 0 auto; padding: 16px 14px 40px; }
+
+  .info-card { background: var(--card); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; margin-bottom: 16px; }
+  .info-card .card-title { background: var(--navy); color: #fff; font-size: 0.72rem; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; padding: 10px 16px; }
+  .info-card .card-title.maroon { background: var(--maroon); }
+  .info-row { display: flex; border-bottom: 1px solid var(--border); }
+  .info-row:last-child { border-bottom: none; }
+  .info-label { width: 110px; flex-shrink: 0; padding: 9px 12px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-muted); background: var(--maroon-light); }
+  .info-value { flex: 1; padding: 9px 12px; font-size: 0.85rem; font-weight: 500; color: var(--text); word-break: break-word; }
+  .info-value a { color: var(--blue); text-decoration: none; }
+  .info-value strong { font-weight: 600; }
+
+  .section { background: var(--card); border-radius: 12px; border: 1px solid var(--border); margin-bottom: 16px; overflow: hidden; }
+  .section-header { display: flex; align-items: center; gap: 8px; padding: 14px 16px 12px; border-bottom: 1px solid var(--border); cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent; }
+  .section-header:active { background: var(--blue-soft); }
+  .section-icon { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.95rem; flex-shrink: 0; }
+  .section-header h2 { font-size: 0.82rem; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--navy); flex: 1; }
+  .chevron { font-size: 0.75rem; color: var(--text-muted); transition: transform 0.2s; }
+  .section.collapsed .chevron { transform: rotate(-90deg); }
+  .section.collapsed .section-body { display: none; }
+  .section-body { padding: 6px 0; }
+
+  .sub-header { padding: 10px 16px 4px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--maroon); }
+  .sub-header:not(:first-child) { border-top: 1px solid var(--border); margin-top: 4px; }
+
+  .q-item { padding: 10px 16px 10px 20px; display: flex; gap: 10px; align-items: flex-start; }
+  .q-item + .q-item { border-top: 1px solid #f0f2f5; }
+  .q-bullet { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; margin-top: 7px; }
+  .q-bullet.maroon { background: var(--maroon); }
+  .q-bullet.blue { background: var(--blue); }
+  .q-bullet.red { background: var(--red); }
+  .q-text { font-size: 0.86rem; line-height: 1.45; color: var(--text); }
+  .q-text strong { font-weight: 600; }
+  .q-text .hint { display: block; font-size: 0.78rem; color: var(--text-muted); margin-top: 3px; font-style: italic; }
+
+  .note-box { border-left: 3px solid; border-radius: 0 8px 8px 0; padding: 11px 14px; margin: 6px 16px 10px; font-size: 0.82rem; line-height: 1.45; }
+  .note-box.maroon { background: var(--maroon-light); border-color: var(--maroon); color: #4a1a1a; }
+  .note-box.red { background: var(--red-light); border-color: var(--red); color: #6a1a1a; }
+  .note-box.warn { background: var(--warn-bg); border-color: var(--warn); color: #6b4a1a; }
+
+  .talk-point { padding: 10px 16px 10px 20px; display: flex; gap: 10px; align-items: flex-start; }
+  .talk-point + .talk-point { border-top: 1px solid #f0f2f5; }
+  .talk-icon { font-size: 0.8rem; margin-top: 2px; flex-shrink: 0; }
+  .talk-text { font-size: 0.86rem; line-height: 1.45; color: var(--text); font-style: italic; }
+
+  .check-item { padding: 10px 16px 10px 20px; display: flex; gap: 10px; align-items: flex-start; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .check-item + .check-item { border-top: 1px solid #f0f2f5; }
+  .check-item input[type="checkbox"] { width: 20px; height: 20px; margin-top: 1px; flex-shrink: 0; accent-color: var(--maroon); cursor: pointer; }
+  .check-item label { font-size: 0.86rem; line-height: 1.4; cursor: pointer; }
+  .check-item.checked label { text-decoration: line-through; color: var(--text-muted); }
+
+  .footer { text-align: center; padding: 12px; font-size: 0.72rem; color: var(--text-muted); }
+  @media (max-width: 400px) { .header h1 { font-size: 1.1rem; } .info-label { width: 95px; font-size: 0.65rem; } }
+  @media print { body { background: #fff; } .section.collapsed .section-body { display: block !important; } .chevron { display: none; } }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Call Prep Sheet</h1>
+  <div class="school-name">Roxbury Community College Tigers</div>
+  <div class="subtitle">Coach Carey Call — May 2026</div>
+</div>
+
+<div class="container">
+
+  <!-- Alert: Key Differences -->
+  <div class="note-box red" style="margin: 0 0 16px;">
+    <strong>Heads up:</strong> Roxbury is a 2-year NJCAA D3 commuter school — very different from the 4-year NAIA offers. No dorms, no athletic scholarships. The questions below are tailored to understand what this path actually looks like.
+  </div>
+
+  <div class="info-card">
+    <div class="card-title maroon">About Roxbury CC</div>
+    <div class="info-row"><div class="info-label">Location</div><div class="info-value">Roxbury Crossing, Boston, Massachusetts</div></div>
+    <div class="info-row"><div class="info-label">Type</div><div class="info-value">Public Community College — Founded 1973 (2-year school)</div></div>
+    <div class="info-row"><div class="info-label">Division</div><div class="info-value">NJCAA Division III — Region 21</div></div>
+    <div class="info-row"><div class="info-label">Nickname</div><div class="info-value">Tigers</div></div>
+    <div class="info-row"><div class="info-label">Tuition (OOS)</div><div class="info-value">~$11,100/year out-of-state <strong>(Aiden pays this as NC resident)</strong></div></div>
+    <div class="info-row"><div class="info-label">Housing</div><div class="info-value"><strong>NO on-campus housing</strong> — commuter school. Off-campus housing in Boston needed (~$10,000+/yr est.)</div></div>
+    <div class="info-row"><div class="info-label">Engineering</div><div class="info-value">Associate's in Engineering. MassTransfer STEM block allows transfer to UMass system &amp; other MA 4-year schools.</div></div>
+    <div class="info-row"><div class="info-label">Enrollment</div><div class="info-value">~2,000 students. 16-acre campus w/ Reggie Lewis Track &amp; Athletic Center.</div></div>
+  </div>
+
+  <div class="info-card">
+    <div class="card-title">Who You're Talking To</div>
+    <div class="info-row"><div class="info-label">Head Coach</div><div class="info-value"><strong>Justin Carey</strong></div></div>
+    <div class="info-row"><div class="info-label">Phone</div><div class="info-value"><a href="tel:8577011713">857-701-1713</a></div></div>
+    <div class="info-row"><div class="info-label">Email</div><div class="info-value"><a href="mailto:jcarey1@rcc.mass.edu">jcarey1@rcc.mass.edu</a></div></div>
+    <div class="info-row"><div class="info-label">Instagram</div><div class="info-value">@tigersbaseballrcc</div></div>
+  </div>
+
+  <!-- What to Know -->
+  <div class="section" id="know">
+    <div class="section-header" onclick="toggleSection('know')">
+      <div class="section-icon" style="background:var(--maroon-light);color:var(--maroon);">📋</div>
+      <h2>What to Know Going In</h2>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="q-item"><div class="q-bullet maroon"></div><div class="q-text"><strong>2-year school:</strong> Aiden would play two years here, earn an associate's, then transfer to a 4-year school for his bachelor's in Engineering. The transfer plan is the whole ballgame.</div></div>
+      <div class="q-item"><div class="q-bullet maroon"></div><div class="q-text"><strong>NJCAA Division III:</strong> D3 does NOT offer athletic scholarships. Aid comes through academic grants, need-based aid, and federal/state programs. 93% of students receive some form of aid.</div></div>
+      <div class="q-item"><div class="q-bullet maroon"></div><div class="q-text"><strong>No on-campus housing:</strong> RCC is a commuter school — no dorms. Aiden would need off-campus housing in Boston, which is one of the most expensive cities in the country. This is a major logistics and cost factor.</div></div>
+      <div class="q-item"><div class="q-bullet maroon"></div><div class="q-text"><strong>Out-of-state tuition:</strong> ~$11,100/year is affordable for tuition, but add Boston housing costs and the real total could be $20,000–25,000+/year.</div></div>
+      <div class="q-item"><div class="q-bullet maroon"></div><div class="q-text"><strong>Engineering transfer path:</strong> RCC offers an Associate's in Engineering. The MassTransfer STEM program can help transfer to UMass or other MA 4-year schools. Need to ask about specific agreements.</div></div>
+      <div class="q-item"><div class="q-bullet maroon"></div><div class="q-text"><strong>Distance from home:</strong> Boston is ~700 miles from Greensboro, NC. Factor in travel costs, support system, and being far from home.</div></div>
+      <div class="q-item"><div class="q-bullet maroon"></div><div class="q-text"><strong>Reggie Lewis Center:</strong> RCC's campus includes the Reggie Lewis Track &amp; Athletic Center — solid facility infrastructure for a community college.</div></div>
+    </div>
+  </div>
+
+  <!-- Questions to Ask -->
+  <div class="section" id="ask">
+    <div class="section-header" onclick="toggleSection('ask')">
+      <div class="section-icon" style="background:var(--warn-bg);color:var(--warn);">🎯</div>
+      <h2>Roxbury-Specific Questions to Ask</h2>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+
+      <div class="sub-header">About the Film &amp; Fit</div>
+      <div class="q-item"><div class="q-bullet red"></div><div class="q-text">What stood out to you when you watched my film, and where do you see me fitting in with your program?</div></div>
+      <div class="q-item"><div class="q-bullet red"></div><div class="q-text">How many catchers are on the roster right now, and how many are returning?</div></div>
+      <div class="q-item"><div class="q-bullet red"></div><div class="q-text">What does the path to playing time look like for an incoming freshman?</div></div>
+
+      <div class="sub-header">About the Program</div>
+      <div class="q-item"><div class="q-bullet red"></div><div class="q-text">What's the competitive schedule like — how many games do you play, and who are your main conference opponents?</div></div>
+      <div class="q-item"><div class="q-bullet red"></div><div class="q-text">What does a typical week look like during the season — practice, games, travel?</div></div>
+      <div class="q-item"><div class="q-bullet red"></div><div class="q-text">Where do you play your home games?</div></div>
+      <div class="q-item"><div class="q-bullet red"></div><div class="q-text">What's the culture and team size like? How many players on the roster?</div></div>
+
+      <div class="sub-header">About Academics &amp; Transfer</div>
+      <div class="q-item"><div class="q-bullet red"></div><div class="q-text">I'm interested in Engineering — can you walk me through how the Associate's in Engineering works for a student-athlete?</div></div>
+      <div class="q-item"><div class="q-bullet red"></div><div class="q-text">What 4-year schools do your players typically transfer to after their two years?</div></div>
+      <div class="q-item"><div class="q-bullet red"></div><div class="q-text">Does the MassTransfer STEM program guarantee admission to UMass or other schools for engineering?</div></div>
+      <div class="q-item"><div class="q-bullet red"></div><div class="q-text">Do you have relationships with 4-year baseball programs that help your players continue playing after RCC?</div></div>
+      <div class="q-item"><div class="q-bullet red"></div><div class="q-text">What academic support is available — tutoring, advising, study hall?</div></div>
+
+      <div class="sub-header">About Housing &amp; Logistics</div>
+      <div class="q-item"><div class="q-bullet red"></div><div class="q-text">Since there's no on-campus housing, where do your out-of-state players typically live?</div></div>
+      <div class="q-item"><div class="q-bullet red"></div><div class="q-text">Do you help incoming players find housing in the area?</div></div>
+      <div class="q-item"><div class="q-bullet red"></div><div class="q-text">What does the realistic total cost look like for an out-of-state player including housing, meals, and tuition?</div></div>
+      <div class="q-item"><div class="q-bullet red"></div><div class="q-text">What financial aid or grants are available for out-of-state students?</div></div>
+
+      <div class="sub-header">About Next Steps</div>
+      <div class="q-item"><div class="q-bullet red"></div><div class="q-text">Can we schedule a campus visit?</div></div>
+      <div class="q-item"><div class="q-bullet red"></div><div class="q-text">What's your timeline for building the roster — when do you need a decision?</div></div>
+    </div>
+  </div>
+
+  <!-- Talking Points -->
+  <div class="section" id="talk">
+    <div class="section-header" onclick="toggleSection('talk')">
+      <div class="section-icon" style="background:var(--blue-soft);color:var(--blue);">💬</div>
+      <h2>Aiden's Talking Points</h2>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="note-box warn">These aren't scripts — they're ideas to have in your back pocket. Keep it natural.</div>
+      <div class="talk-point"><div class="talk-icon">💡</div><div class="talk-text">"I'm looking for a program where I can compete for a spot and contribute right away. I want to develop as a player and put myself in position to transfer to a 4-year program."</div></div>
+      <div class="talk-point"><div class="talk-icon">💡</div><div class="talk-text">"I'm a catcher first, but I can contribute with my bat. I take pride in running a pitching staff and being a leader on the field."</div></div>
+      <div class="talk-point"><div class="talk-icon">💡</div><div class="talk-text">"Academics are a priority — I have a 3.732 GPA and I'm interested in Engineering. I want to make sure I'm taking the right courses to transfer into a 4-year engineering program."</div></div>
+      <div class="talk-point"><div class="talk-icon">💡</div><div class="talk-text">"I'm also talking with some 4-year schools, so I want to understand what Roxbury offers and how it compares as a path to where I want to end up."</div></div>
+    </div>
+  </div>
+
+  <!-- Call Checklist -->
+  <div class="section" id="checklist">
+    <div class="section-header" onclick="toggleSection('checklist')">
+      <div class="section-icon" style="background:var(--accent-bg);color:var(--accent);">✅</div>
+      <h2>Call Day Checklist</h2>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox" tabindex="-1"><label>Let Aiden do most of the talking — coaches want to hear from the player</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox" tabindex="-1"><label>Dad handles financial aid, housing logistics, and cost questions</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox" tabindex="-1"><label>Lead with: "I'm looking for a program where I can compete and develop"</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox" tabindex="-1"><label>Have highlight site link ready to share or text to Coach Carey</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox" tabindex="-1"><label>Ask specifically about out-of-state player housing — this is the #1 logistics question</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox" tabindex="-1"><label>Ask about 4-year transfer pipeline — where do players go after RCC?</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox" tabindex="-1"><label>Be in a quiet place with good signal — speaker phone with Dad nearby</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox" tabindex="-1"><label>Take notes right after the call to compare with other schools</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox" tabindex="-1"><label>Send a thank-you text or email within 24 hours</label></div>
+    </div>
+  </div>
+
+  <div class="note-box maroon" style="margin: 0 0 16px;">
+    <strong>Bottom line question:</strong> Roxbury's value depends on two things — can Aiden get playing time and development, and is there a clear transfer path to a 4-year engineering + baseball program? If the coach can answer both, it's worth serious consideration. If not, the 4-year offers may be stronger.
+  </div>
+
+  <div class="footer">Aiden Simmons — Class of 2026 — Southeast Guilford HS, Greensboro, NC<br>
+  <a href="https://einnorsnommis.github.io/AidenSimmons2026/" style="color:var(--blue);text-decoration:none;">einnorsnommis.github.io/AidenSimmons2026/</a></div>
+</div>
+
+<script>
+function toggleSection(id) { document.getElementById(id).classList.toggle('collapsed'); }
+function toggleCheck(el) { const cb = el.querySelector('input[type="checkbox"]'); cb.checked = !cb.checked; el.classList.toggle('checked', cb.checked); }
+</script>
+</body>
+</html>
